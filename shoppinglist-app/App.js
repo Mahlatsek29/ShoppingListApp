@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 
 
 export default function App() {
+  
   const RootApp = () => {
     return (
       <SafeAreaView>

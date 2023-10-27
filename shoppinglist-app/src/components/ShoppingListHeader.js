@@ -1,12 +1,7 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity, Alert,
-} from "react-native";
 import React, { useState } from "react";
-import {useDispatch} from " react-redux";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { useDispatch } from "react-redux";
+import { addList } from "../redux/listSlice";
 
 const ShoppingListHeader = () => {
   const dispatch = useDispatch();
@@ -15,14 +10,12 @@ const ShoppingListHeader = () => {
   const onSubmitList = () => {
     if (shopping.trim().length === 0) {
       console.log('empty');
-      Alert.alert("You need to enyer a list"
-      );
+      Alert.alert("You Need To Enter An Item");
       setShopping("");
       return;
     }
 
-    dispatch(addShopping(shopping)); 
-
+    dispatch(addList({ id: Date.now(), name: shopping }));
     setShopping("");
   };
 
@@ -63,10 +56,10 @@ const ShoppingListHeader = () => {
             padding: 10,
             margin: 10,
             width: "90%",
-            borderRadius: 5, // Corrected 'boarderRadius' to 'borderRadius'
+            borderRadius: 5,
             alignItems: "center",
           }}
-          onPress={onSubmitList} // Corrected the onPress handler
+          onPress={onSubmitList}
         >
           <Text style={{ color: "white" }}>Add</Text>
         </TouchableOpacity>

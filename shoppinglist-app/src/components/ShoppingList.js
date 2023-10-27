@@ -1,33 +1,22 @@
+import React from "react";
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-import { Ionicons } from '@expo/vector-icons';
-import { useSelector } from "react-redux/es/hooks/useSelector";
-
-const data = [
-  { id: 1, title: "Fruits" },
-  { id: 2, title: "Vegetables" },
-];
+import { useSelector, useDispatch } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
+import { deleteList } from "../redux/listSlice";
 
 const ShoppingList = () => {
-
-    const list= useSelector {(state) => state.lists};  
-  const [items, setItems] = useState(data);
-
-  const deleteItem = (itemId) => {
-    const updatedItems = items.filter(item => item.id !== itemId);
-    setItems(updatedItems);
-  };
+  const dispatch = useDispatch();
+  const list = useSelector((state) => state.list);
 
   const renderItem = ({ item }) => {
+    const deleteItem = () => {
+      dispatch(deleteList({ id: item.id }));
+    };
+
     return (
       <View style={styles.item}>
-        <Text style={styles.title}>{item.title}</Text>
-        <TouchableOpacity 
-          style={styles.deleteButton}
-          onPress={() => {
-            deleteItem(item.id);
-          }}
-        >
+        <Text style={styles.title}>{item.name}</Text>
+        <TouchableOpacity style={styles.deleteButton} onPress={deleteItem}>
           <Ionicons name="trash" size={30} color="black" />
         </TouchableOpacity>
       </View>
@@ -37,7 +26,7 @@ const ShoppingList = () => {
   return (
     <View>
       <FlatList
-        data={items}
+        data={list}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
@@ -52,7 +41,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
     flexDirection: "row",
-    justifyContent:"space-between",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   title: {
